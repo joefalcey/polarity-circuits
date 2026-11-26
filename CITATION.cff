@@ -1,0 +1,13 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite the repository (and the paper, once there is one)."
+title: "polarity-circuits"
+abstract: "A natural-logic monotonicity engine plus causal-abstraction experiments probing whether small language models implement the monotonicity calculus."
+authors:
+  - family-names: "FALCEY"
+    given-names: "JOSEPH"
+    affiliation: "University of Stuttgart, IMS"
+    orcid: "https://orcid.org/0000-0000-0000-0000"
+version: 0.0.1
+date-released: "2026-11-25"
+license: MIT
+repository-code: "https://github.com/joefalcey/polarity-circuits"

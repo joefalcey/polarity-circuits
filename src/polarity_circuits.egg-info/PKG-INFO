@@ -1,0 +1,146 @@
+Metadata-Version: 2.4
+Name: polarity-circuits
+Version: 0.0.1
+Summary: Natural-logic monotonicity engine and interpretability experiments for small language models
+Author-email: JOSEPH A FALCEY <josephfalcey@gmail.com>
+License: MIT
+Keywords: natural logic,monotonicity,interpretability,causal abstraction,semantics
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Topic :: Scientific/Engineering :: Artificial Intelligence
+Requires-Python: >=3.11
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: numpy>=1.26
+Provides-Extra: interp
+Requires-Dist: torch>=2.3; extra == "interp"
+Requires-Dist: transformers>=4.44; extra == "interp"
+Requires-Dist: datasets>=2.20; extra == "interp"
+Requires-Dist: accelerate>=0.33; extra == "interp"
+Requires-Dist: pyvene>=0.1.8; extra == "interp"
+Requires-Dist: transformer-lens>=2.0; extra == "interp"
+Requires-Dist: sae-lens>=5.0; extra == "interp"
+Provides-Extra: kan
+Requires-Dist: efficient-kan>=0.1.2; extra == "kan"
+Provides-Extra: dev
+Requires-Dist: pytest>=8; extra == "dev"
+Requires-Dist: ruff>=0.5; extra == "dev"
+Requires-Dist: mypy>=1.11; extra == "dev"
+Requires-Dist: pre-commit>=3.7; extra == "dev"
+Provides-Extra: paper
+Requires-Dist: pyyaml>=6.0; extra == "paper"
+Requires-Dist: matplotlib>=3.8; extra == "paper"
+Requires-Dist: pandas>=2.2; extra == "paper"
+Dynamic: license-file
+
+# polarity-circuits
+
+**Does a small language model *implement* the monotonicity calculus — or does it
+merely approximate monotonicity behaviour?**
+
+Working title: *Polarity Circuits: Is Natural-Logic Monotonicity Implemented in
+Small Language Models?*
+
+> **Status: v0.1.0 — work in progress, pre-results.**
+> The engine and the benchmark generator work and are tested; the
+> interpretability experiments are not written. Nothing here is a finding yet.
+
+Roadmap:
+
+- [x] natural-logic engine (polarity assignment + monotonicity entailment)
+- [x] controlled benchmark generator with exact gold derivations
+- [x] golden tests; CI green
+- [ ] behavioural scoring on small LMs
+- [ ] external validity on FLog / MED
+- [ ] activation patching
+- [ ] causal abstraction (DAS)
+- [ ] KAN-vs-linear probe ablation
+- [ ] paper draft -> arXiv -> workshop submission
+
+<!-- If a checkbox is true, the corresponding code path must run. Anything else
+     gets moved to a branch. -->
+
+## The question
+
+Natural logic (MacCartney & Manning, 2009) specifies an algorithm for
+monotonicity inference: assign a polarity to every position, then allow
+generalisation only in upward-entailing contexts and specialisation only in
+downward-entailing ones. Models can get the *labels* right without running that
+algorithm — surface cues, lexical overlap, and heuristics are enough for much of
+FLog and MED.
+
+This repo builds the instrument to tell the difference:
+
+1. a small, dependency-free **natural-logic engine** that computes the
+   ground-truth polarity tree;
+2. a **controlled benchmark** generated from that engine, so the correct
+   symbolic computation is known by construction;
+3. **causal abstraction** experiments that ask whether the model's internal
+   states behave like the symbolic variable under interchange interventions;
+4. a contained **KAN-vs-linear probe** ablation on the same variable.
+
+## Layout
+
+```
+src/polarity_circuits/
+  natlog/        # engine: NO torch, NO numpy. Importable on its own.
+  data/          # controlled generator + (planned) FLog / MED / FraCaS loaders
+  interp/        # (planned) patching, DAS, probes -- torch lives here only
+  cli.py
+tests/           # golden tests; the engine's contract
+configs/         # yaml, one file per experiment family
+docs/            # research notes (gap memo), decisions (ADRs), data card
+paper/           # ACL-style LaTeX, versioned with the code
+results/         # committed numbers + figures so nobody has to rerun
+```
+
+Three structural rules, on purpose:
+
+- **`natlog/` must never import torch.** The engine is the reusable artifact;
+  keeping it light is what makes it installable and citable.
+- **`tests/` is the contract.** Every bug becomes a golden case.
+- **`results/` is committed.** A reader should be able to check the table
+  without a GPU.
+
+## Quickstart
+
+```bash
+uv sync --extra dev          # or: pip install -e ".[dev]"
+make test
+make data                    # writes data/controlled/controlled.jsonl
+```
+
+Sanity check the engine:
+
+```python
+from polarity_circuits.natlog import Node, entails, pretty, assign_polarity
+
+p = Node.quant("every", Node.pred("animal"), Node.pred("brown"))
+h = Node.quant("every", Node.pred("dog"), Node.pred("brown"))
+print(pretty(assign_polarity(p)))   # every(animal↓, brown↑)
+print(entails(p, h))                # True: DE restrictor, specialise
+```
+
+## Results
+
+<!-- Fill in as experiments land. Regenerate with `make figures`. -->
+
+| Model | Params | Controlled (bal.) | FLog | MED | Polarity probe (lin.) | Polarity probe (KAN) |
+| --- | --- | --- | --- | --- | --- | --- |
+| _TBD_ | | | | | | |
+
+## Reproducing
+
+```bash
+make all     # data -> baselines -> patching -> DAS -> figures -> paper
+```
+
+Every stage writes to `results/`; nothing is silently overwritten.
+
+## Citing
+
+See `CITATION.cff`. Until there is a paper, cite the repo.
+
+## License
+
+MIT.

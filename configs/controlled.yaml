@@ -1,0 +1,19 @@
+# Controlled monotonicity benchmark -- configuration
+seed: 13
+n_items: 400
+
+# v1 scope discipline: English, one phenomenon, no extras.
+templates:
+  - every
+  - no
+  - some
+  - not_every
+
+positions:
+  - restrictor
+  - scope
+
+# Difficulty knobs (implement in v2; see docs/research_notes.md)
+# nesting_depth: 1
+# distractors: 0
+# lexical_overlap: high

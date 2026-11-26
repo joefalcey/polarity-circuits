@@ -1,0 +1,73 @@
+% ACL-style paper skeleton.
+%
+% 1. Put acl.sty and acl_natbib.bst in this directory:
+%      https://github.com/acl-org/acl-style-files
+%    (or use the official Overleaf template and copy the .tex back here)
+% 2. `make paper`
+%
+% WRITE ORDER (do not write top to bottom):
+%   3 Methods -> 4 Data -> 5 Results -> 6 Analysis -> 2 Background ->
+%   7 Related -> 1 Intro -> 8 Discussion -> Abstract LAST.
+% Keep numbers in results/tables/*.json and \input them; never retype a number.
+
+\documentclass[11pt]{article}
+\usepackage[review]{acl}
+\usepackage{times}
+\usepackage{latexsym}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{microtype}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{amsmath}
+\usepackage{amssymb}
+
+\title{Polarity Circuits: Is Natural-Logic Monotonicity\\Implemented in Small Language Models?}
+
+\author{Anonymous}
+
+\date{}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+% Three sentences: the question, the instrument, the finding.
+% If you cannot state the finding in one sentence, it is not a paper yet.
+\end{abstract}
+
+\section{Introduction}
+% 1. Models pass monotonicity benchmarks. 2. Passing is not implementing.
+% 3. We build a controlled instrument and test implementation causally.
+% 4. Contribution bullets (3, no more).
+
+\section{Background: The Monotonicity Calculus}
+% Polarity assignment; upward/downward entailment; what a model must do to
+% count as implementing it. Keep this to ~0.75 page.
+
+\section{A Controlled Benchmark with Known Derivations}
+% Generator, fragment, gold labels, human validation of a sample, difficulty knobs.
+
+\section{Do Models Track Polarity? Behavioural Evidence}
+% Controlled set + FLog + MED. Report the negative controls: if a bag-of-words
+% baseline does well, say so -- it bounds the interpretation.
+
+\section{Causal Abstraction of the Polarity Variable}
+% Interchange interventions, DAS, layerwise results, null results.
+% State the falsification conditions from docs/research_notes.md up front.
+
+\section{Are KAN Probes More Faithful than Linear Probes?}
+% Matched-parameter comparison on the same variable. One table, one paragraph
+% of interpretation. This is a subsection, not a pillar.
+
+\section{Related Work}
+
+\section{Discussion and Limitations}
+% Ecological validity, fragment size, single language, linear-abstraction
+% boundary conditions.
+
+\section{Conclusion}
+
+\bibliography{refs}
+
+\end{document}

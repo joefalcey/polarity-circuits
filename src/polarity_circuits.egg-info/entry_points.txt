@@ -1,0 +1,2 @@
+[console_scripts]
+polarity-circuits = polarity_circuits.cli:main
