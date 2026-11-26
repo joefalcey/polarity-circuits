@@ -1,3 +1,3 @@
 # polarity-circuits
 
-Polarity circuits is currently under development. Contents may be found in the "development" branch.
+This project is actively under construction. Check the `dev` branch for current progress.
